@@ -1,0 +1,63 @@
+% upLaTeX用にuplatexオプションが指定してあるが、
+% pLaTexの場合ははずす
+\documentclass[pdflatex, ja=standard, a4paper]{bxjsarticle}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{ascmac}
+\usepackage{graphicx}
+\usepackage{ascmac}
+\usepackage{enumitem}
+
+\DeclareGraphicsRule{.ai}{pdf}{.ai}{}
+
+\newcommand{\source}{\mathcal{S}}
+\newcommand{\code}{\mathcal{C}}
+
+\begin{document}
+\begin{description}[style=nextline]
+    \item[情報源$\source$] 情報の発生源
+    \item[情報源$\source$のシンボル$s_i$] 情報源$\source$が出す記号
+    \item[情報源$\source$のアルファベット$S = \{s_1, \cdots, s_q\}$] 情報源$\source$の出すシンボルの集合
+    \item[定常情報源] シンボルの出現確率は時間に依らず、常に一定な情報源
+    \item[記憶のない情報源] あるシンボルの出現確率は、その前までに出現しているシンボルに依存しないような情報源
+    \item[符号シンボル$t_j$] 情報源$\source$を符号化する際に用いられるシンボル
+    \item[符号アルファベット$T = \{t_1, \cdots, t_r\}$] 符号シンボルの集合
+    \item[基数$r = |T|$] 符号シンボルの個数。$r$の符号アルファベットは$r$元符号と呼ばれる
+    \item[語$w$] $T$のシンボルからなる有限列
+    \item[語長, 長さ$|w|$] 語を構成するシンボルの個数
+    \item[空語$\epsilon$] 語長が$0$の語
+    \item[$\displaystyle T^+ = \bigcup_{i = 1}^n \prod_{j = 1}^i T$] 空語を含まない語の集合
+    \item[$\displaystyle T^* = \bigcup_{i = 0}^n \prod_{j = 1}^i T$] 空語を含んだ語の集合
+    \item[符号$\code: S \to T^*$] 情報源$\source$のアルファベット$S$を$T^*$に割り当てる関数。省略されて、単に$\code = \{w_i : w_i \in T^* \enspace (i = 1, \cdots, q)\}$と書かれることもある
+    \item[$\code^*: S^* \to T^*$] $C$を$S^*$から$T^*$の関数として拡張したもの。同様に$\code^* = \{w_{i_1} \cdots w_{i_n} \in T^* : w_{i_1}, \cdots, w_{i_n} \in C\}$と書かれることもある
+    \item[符号語] 符号の要素
+    \item[平均符号長$\displaystyle L(\code) = \sum_{i = 1}^q p_i |w_i|$] 符号$\code$における、語長の平均値
+    \item[一意復号可能な符号] 全単射な符号
+    \item[ブロック符号] 語長が全て同じ符号
+    \item[語頭] ある語の先頭から初まっているシンボルの部分列のこと。例えば、語$w = w' 1$の$w'$が語頭
+    \item[語頭符号] 全ての符号語は語頭に他の符号語をもたないような符号
+    \item[瞬時復号可能な符号] 一意復号可能で、語を見たときに復元をすぐに行うことができる符号。語頭符号と同値
+    \item[$r$元根付き木] 空語$\epsilon$を根として、それに符号シンボル$t \in T$を足した、$\epsilon t = t$という語を空語の子とし、さらに、その子にそれぞれ符号シンボル$t' \in T$をたした$t t'$という語を子にもつようにするという操作を、繰り返して得られる木。ただし、高さは有限
+    \item[クラフトの不等式] 符号長$l_1, \cdots, l_q$を持つ瞬時符号は、高さが$\max\{l_1, \cdots, l_q\}$の$r$元根付き木を考えたとき、符号語として選択された語の子、すなわち、その選択された節の語を語頭として持っている$r$元根付き木の語の数の割合が$1$を越えないときかつそのときのみ存在するという定理。すなわち、次の不等式を満たすときかつそのときのみ、語長$l_1, \cdots, l_q$を持つ瞬時符号は存在する:
+        \begin{align} \label{kraft}
+            \sum_{i = 1}^q \frac{1}{r^{l_i}} \leq 1
+        \end{align}
+    \item[マクミランの不等式] 瞬時符号と同じで、符号長$l_1, \cdots, l_q$を持つ一意復号可能な符号の存在条件を伸べた定理。瞬時符号と同じで、条件式\eqref{kraft}を満たすときかつそのときのみ符号長$l_1, \cdots, l_q$を持つ一意復号可能な符号は存在する。ここから、符号長が$l_1, \cdots, l_q$の一意復号可能な符号が存在するときかつそのときのみ同じ語長を持つ瞬時符号が存在することがすぐに従う
+    \item[最適符号, コンパクト符号] 基数と各情報源アルファベットの出現確率の分布が与えられたとき、平均符号長が最も小さくなる符号。任意の情報源は$r \geq 2$とすれば、最適符号が必ず存在する
+\end{description}
+\begin{figure}[b]
+    \centering
+    \begin{tabular}{c}
+        \begin{minipage}{0.5\hsize}
+            \centering
+            \includegraphics{image/code-and-source.ai}
+            \caption{情報源$\source$はシンボル列$s_{i_1} s_{i_2} \cdots$を出し、それを符号$\code$を利用して語の列$w_{i_1} w_{i_2} \cdots$へ符号化}
+        \end{minipage}
+        \begin{minipage}{0.5\hsize}
+            \centering
+            \includegraphics{image/tree.ai}
+            \caption{高さが$2$の$2$元根付き木の例}
+        \end{minipage}
+    \end{tabular}
+\end{figure}
+\end{document}
